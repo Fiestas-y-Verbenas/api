@@ -1,0 +1,56 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: "Log level"
+        required: true
+        default: "warning"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    container: node:14
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Build and Publish to Github Packages Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: ghcr.io/Fiestas-y-Verbenas/api/api
+        registry: ghcr.io
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        dockerfile: Dockerfile
+        tags: latest
+
+    - name: Deploy package to VPS
+      uses: appleboy/ssh-action@master
+      env:
+        GITHUB_USERNAME: ${{ secrets.USERNAME }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        port: ${{ secrets.DEPLOY_PORT }}
+        username: ${{ secrets.DEPLOY_USER }}
+        password: ${{ secrets.DEPLOY_PASSWORD }}
+        envs: GITHUB_USERNAME, GITHUB_TOKEN
+        script: |
+          docker login ghcr.io -u $GITHUB_USERNAME -p $GITHUB_TOKEN
+          docker pull ghcr.io/Fiestas-y-Verbenas/api/api:latest
+          if docker ps -a --format '{{.Names}}' | grep -q 'FiestasVerbenasAPI'; then
+            docker stop FiestasVerbenasAPI
+            docker rm FiestasVerbenasAPI
+          fi
+          docker run \
+            --name FiestasVerbenasAPI \
+            -dit -p 3010:3010 \
+            --env-file /home/soft/fiestasyverbenas.es/env.list \
+            -v /home/soft/fiestasyverbenas.es/api-files:/api-files \
+            --restart on-failure ghcr.io/Fiestas-y-Verbenas/api/api:latest
