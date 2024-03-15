@@ -1,0 +1,27 @@
+# Dependencias
+/node_modules
+
+# Archivos generados por el sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de registro
+logs
+*.log
+
+# Archivos de respaldo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de configuración
+.env
+
+# Archivos de compilación
+/build
+
+# Archivos de pruebas
+/coverage
+
+# Dependencias de desarrollo
+/typings

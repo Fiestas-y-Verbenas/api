@@ -1,0 +1,34 @@
+{
+  "name": "fiestas-verbenas-api",
+  "version": "1.0.0",
+  "description": "API's Fiestas y Verbenas website and Android App",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fiestas-y-Verbenas/api.git"
+  },
+  "author": "Sheyla1996",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/Fiestas-y-Verbenas/api/issues"
+  },
+  "homepage": "https://github.com/Fiestas-y-Verbenas/api#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "express-fileupload": "^1.5.0",
+    "i18n-express": "^1.1.3",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.9.2",
+    "sequelize": "^6.37.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
+  }
+}
